@@ -1,0 +1,152 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_iconpicker/flutter_iconpicker.dart';
+import 'package:mywallet/logic/expense/expense_cubit.dart';
+
+class AddExpenseModal extends StatefulWidget {
+  AddExpenseModal();
+
+  @override
+  State<AddExpenseModal> createState() => _AddExpenseModalState();
+}
+
+class _AddExpenseModalState extends State<AddExpenseModal> {
+  DateTime? selectedDay;
+  IconData? selectedIcon;
+
+  final expenseTitle = TextEditingController();
+  final expensePrice = TextEditingController();
+
+  void submitXarajat(BuildContext context) {
+    if (expenseTitle.text.isEmpty &&
+        expensePrice.text.isEmpty &&
+        selectedDay == null &&
+        selectedIcon == null) {
+      return;
+    }
+    context.read<ExpenseCubit>().addExpense(
+        expenseTitle.text, double.parse(expensePrice.text), selectedIcon!);
+    Navigator.of(context).pop();
+  }
+
+  void selectDateDay(BuildContext context) {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((selectedDay) {
+      if (selectedDay != null) {
+        setState(() {
+          selectedDay = selectedDay;
+        });
+      }
+    });
+  }
+
+  void selectIcon(BuildContext context) {
+    // FlutterIconPicker.showIconPicker(
+    //   context,
+    //   iconPackModes: [IconPack.fontAwesomeIcons],
+    // ).then(
+    //   (selected) {
+    //     if (selected != null) {
+    //       setState(() {
+    //         selectedIcon = selected;
+    //       });
+    //     }
+    //   },
+    // );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(
+          top: 16,
+          left: 16,
+          right: 16,
+          bottom: MediaQuery.of(context).viewInsets.bottom > 0
+              ? MediaQuery.of(context).viewInsets.bottom + 16
+              : 16,
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 150.0,
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      labelText: "Xarajat nomi",
+                    ),
+                    controller: expenseTitle,
+                  ),
+                ),
+                SizedBox(
+                  width: 150.0,
+                  child: TextField(
+                    decoration:
+                        const InputDecoration(labelText: "Xarajat miqdori"),
+                    controller: expensePrice,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  selectedDay == null
+                      ? "Sana hali tanlanmagan!"
+                      : DateFormat("MMMM  d, yyyy").format(selectedDay!),
+                ),
+                TextButton(
+                  onPressed: () {
+                    selectDateDay(context);
+                  },
+                  child: const Text("KUNNI TANLASH"),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                selectedIcon != null
+                    ? Icon(selectedIcon)
+                    : const Text("Icon tanlanmagan!"),
+                TextButton(
+                  onPressed: () {
+                    selectIcon(context);
+                  },
+                  child: const Text("ICON TANLASH"),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("BEKOR QILISH"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    submitXarajat(context);
+                  },
+                  child: const Text("KIRITISH"),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
