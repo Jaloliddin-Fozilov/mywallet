@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mywallet/logic/cubit/date_cubit.dart';
 // import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:mywallet/logic/expense/expense_cubit.dart';
 
 class AddExpenseModal extends StatefulWidget {
-  AddExpenseModal();
+  const AddExpenseModal({Key? key}) : super(key: key);
 
   @override
   State<AddExpenseModal> createState() => _AddExpenseModalState();
 }
 
 class _AddExpenseModalState extends State<AddExpenseModal> {
-  DateTime? selectedDay;
-  IconData? selectedIcon;
+  DateTime? selectedDay = DateTime.now();
+  IconData? selectedIcon = Icons.add;
 
   final expenseTitle = TextEditingController();
   final expensePrice = TextEditingController();
@@ -25,8 +26,9 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
         selectedIcon == null) {
       return;
     }
-    context.read<ExpenseCubit>().addExpense(
-        expenseTitle.text, double.parse(expensePrice.text), selectedIcon!);
+    context.read<ExpenseCubit>().addExpense(expenseTitle.text,
+        double.parse(expensePrice.text), selectedIcon!, selectedDay!);
+    context.read<ExpenseCubit>().getExpenses();
     Navigator.of(context).pop();
   }
 
@@ -36,10 +38,10 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2019),
       lastDate: DateTime.now(),
-    ).then((selectedDay) {
-      if (selectedDay != null) {
+    ).then((selectedDateDay) {
+      if (selectedDateDay != null) {
         setState(() {
-          selectedDay = selectedDay;
+          selectedDay = selectedDateDay;
         });
       }
     });
@@ -48,7 +50,7 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
   void selectIcon(BuildContext context) {
     // FlutterIconPicker.showIconPicker(
     //   context,
-    //   iconPackModes: [IconPack.fontAwesomeIcons],
+    //   iconPackModes: [IconPack.material],
     // ).then(
     //   (selected) {
     //     if (selected != null) {

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mywallet/presentation/widgets/add_expense_modal.dart';
 import 'package:mywallet/presentation/widgets/expenses_block.dart';
+import 'package:mywallet/presentation/widgets/percent_widget.dart';
 
+import '../../logic/expense/expense_cubit.dart';
 import '../widgets/active_date.dart';
+import '../widgets/money_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,14 +20,14 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              // showModalBottomSheet(
-              //   isScrollControlled: true,
-              //   isDismissible: false,
-              //   context: context,
-              //   builder: (ctx) {
-              //     return AddExpenseModal();
-              //   },
-              // );
+              showModalBottomSheet(
+                isScrollControlled: true,
+                isDismissible: false,
+                context: context,
+                builder: (ctx) {
+                  return const AddExpenseModal();
+                },
+              );
             },
             icon: const Icon(Icons.add),
           ),
@@ -31,8 +35,10 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ActiveDate(),
-          ExpensesBlock(),
+          const ActiveDate(),
+          MoneyWidget(456.45),
+          PercentWidget(() {}, 456.45, 42),
+          const ExpensesBlock(),
         ],
       ),
     );

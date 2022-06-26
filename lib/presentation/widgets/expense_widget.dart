@@ -7,7 +7,10 @@ import '../../logic/expense/expense_cubit.dart';
 
 class ExpenseWidget extends StatefulWidget {
   final Expense expense;
-  ExpenseWidget(this.expense);
+  const ExpenseWidget({
+    Key? key,
+    required this.expense,
+  }) : super(key: key);
 
   @override
   State<ExpenseWidget> createState() => _ExpenseWidgetState();
@@ -28,7 +31,10 @@ class _ExpenseWidgetState extends State<ExpenseWidget> {
       background: Container(
         padding: const EdgeInsets.all(24),
         alignment: Alignment.centerRight,
-        color: Colors.red,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.red,
+        ),
         child: const Icon(Icons.delete_forever, color: Colors.white),
       ),
       child: ListTile(
@@ -38,7 +44,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget> {
           ),
           child: CircleAvatar(
             radius: 24,
-            backgroundColor: Color(0xffEFEEFC),
+            backgroundColor: const Color(0xffEFEEFC),
             child: Icon(
               (widget.expense.icon),
               color: Colors.black45,
@@ -51,7 +57,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget> {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
-          DateFormat("d-MMMM-yyyy").format(widget.expense.day),
+          DateFormat("d-MMMM-yyyy").format(widget.expense.date),
           style: const TextStyle(fontSize: 12),
         ),
         trailing: Text("${widget.expense.price} so'm"),

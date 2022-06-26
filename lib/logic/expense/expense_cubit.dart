@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:mywallet/logic/user/user_cubit.dart';
 
 import '../../data/models/expense.dart';
+import '../cubit/date_cubit.dart';
 
 part 'expense_state.dart';
 
@@ -16,22 +17,36 @@ class ExpenseCubit extends Cubit<ExpenseState> {
             Expense(
               id: UniqueKey().toString(),
               title: 'Phone',
-              day: DateTime.now(),
+              date: DateTime(2022, 06),
               userId: '1',
               price: 200456,
               icon: Icons.phone,
-            )
+            ),
+            Expense(
+              id: UniqueKey().toString(),
+              title: 'Phone',
+              date: DateTime.now(),
+              userId: '1',
+              price: 200456,
+              icon: Icons.phone,
+            ),
+            Expense(
+              id: UniqueKey().toString(),
+              title: 'Phone',
+              date: DateTime(2022, 05),
+              userId: '1',
+              price: 200456,
+              icon: Icons.phone,
+            ),
           ]),
         );
 
-  void getExpenses(DateTime date) {
+  void getExpenses() {
     final user = userCubit.currentUser;
-    final expenses = state.expenses!
-        .where((expense) =>
-            expense.userId == user.id &&
-            expense.day.month == date.month &&
-            expense.day.year == date.year)
-        .toList();
+    final expenses =
+        state.expenses!.where((expense) => expense.userId == user.id).toList();
+    print(expenses);
+    emit(ExpenseInitial(expenses));
     emit(ExpenseLoaded(expenses));
   }
 
@@ -39,6 +54,7 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     String title,
     double price,
     IconData icon,
+    DateTime date,
   ) {
     final user = userCubit.currentUser;
     try {
@@ -46,7 +62,7 @@ class ExpenseCubit extends Cubit<ExpenseState> {
         id: UniqueKey().toString(),
         title: title,
         userId: user.id,
-        day: DateTime.now(),
+        date: date,
         price: price,
         icon: icon,
       );
@@ -54,6 +70,7 @@ class ExpenseCubit extends Cubit<ExpenseState> {
       emit(ExpenseAdded());
       emit(ExpenseLoaded(expenses));
     } catch (e) {
+      print('$e added error');
       emit(const ExpenseError('Error occured'));
     }
   }
@@ -63,12 +80,5 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     expenses!.removeWhere((expense) => expense.id == id);
     emit(DeleteExpense());
     emit(ExpenseLoaded(expenses));
-  }
-
-  List<Expense> sortByMonth(DateTime date) {
-    return state.expenses!
-        .where((expense) =>
-            expense.day.month == date.month && expense.day.year == date.year)
-        .toList();
   }
 }

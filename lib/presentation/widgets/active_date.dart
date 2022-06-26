@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:mywallet/logic/cubit/date_cubit.dart';
 
 import '../../logic/expense/expense_cubit.dart';
 
 class ActiveDate extends StatefulWidget {
+  const ActiveDate({Key? key}) : super(key: key);
   @override
   State<ActiveDate> createState() => _ActiveDateState();
 }
@@ -18,7 +20,7 @@ class _ActiveDateState extends State<ActiveDate> {
   @override
   void didChangeDependencies() {
     if (!_init) {
-      context.read<ExpenseCubit>().getExpenses(selectedMonth);
+      context.read<DateCubit>().changeDate(selectedMonth);
     }
     _init = true;
     super.didChangeDependencies();
@@ -36,6 +38,8 @@ class _ActiveDateState extends State<ActiveDate> {
           setState(
             () {
               selectedMonth = selected;
+              context.read<DateCubit>().changeDate(selectedMonth);
+              // context.read<DateCubit>().getExpensesByFilter();
             },
           );
         }
@@ -55,7 +59,8 @@ class _ActiveDateState extends State<ActiveDate> {
               selectDate(context);
             },
             child: Text(
-              DateFormat("MMMM, yyyy").format(selectedMonth),
+              DateFormat("MMMM, yyyy")
+                  .format(context.read<DateCubit>().state.date!),
               style: TextStyle(
                   color: Theme.of(context).primaryColor, fontSize: 18),
             ),

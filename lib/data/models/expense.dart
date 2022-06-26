@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Expense {
   final String id;
   final String title;
-  final DateTime day;
+  final DateTime date;
   final String userId;
   final double price;
   final IconData icon;
@@ -11,7 +11,7 @@ class Expense {
   Expense({
     required this.id,
     required this.title,
-    required this.day,
+    required this.date,
     required this.userId,
     required this.price,
     required this.icon,

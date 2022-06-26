@@ -4,6 +4,8 @@ import 'package:mywallet/logic/expense/expense_cubit.dart';
 import 'package:mywallet/logic/user/user_cubit.dart';
 import 'package:mywallet/presentation/screens/home_screen.dart';
 
+import 'logic/cubit/date_cubit.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -19,6 +21,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (ctx) => ExpenseCubit(userCubit: ctx.read<UserCubit>()),
+        ),
+        BlocProvider(
+          create: (ctx) => DateCubit(ctx.read<ExpenseCubit>()),
         ),
       ],
       child: MaterialApp(
