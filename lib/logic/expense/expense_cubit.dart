@@ -91,4 +91,8 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     emit(DeleteExpense());
     emit(ExpenseLoaded(expenses));
   }
+
+  double get monthExpense {
+    return state.expenses!.fold(0, (price, list) => price + list.price);
+  }
 }

@@ -6,6 +6,7 @@ part 'date_state.dart';
 
 class DateCubit extends Cubit<DateState> {
   DateCubit() : super(DateInitial(DateTime.now()));
+
   DateTime get getActiveDate {
     return state.date!;
   }

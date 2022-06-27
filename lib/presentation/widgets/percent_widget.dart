@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mywallet/logic/expense/expense_cubit.dart';
+import 'package:mywallet/presentation/widgets/add_balance.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:intl/intl.dart';
 
-class PercentWidget extends StatefulWidget {
-  final Function _allBudjet;
-  final double budjet;
-  final double percentCalc;
-  var budjetF = NumberFormat("###.0#");
+import '../../logic/balance/balance_cubit.dart';
 
-  PercentWidget(
-    this._allBudjet,
-    this.budjet,
-    this.percentCalc,
-  );
+class PercentWidget extends StatefulWidget {
+  const PercentWidget({Key? key}) : super(key: key);
 
   @override
   State<PercentWidget> createState() => _PercentWidgetState();
 }
 
 class _PercentWidgetState extends State<PercentWidget> {
-  void perdentCalc() {
-    int percentResult = widget.percentCalc.toInt();
+  double percent = 0;
+
+  double get percentCalc {
+    BlocListener<BalanceCubit, BalanceState>(
+      listener: (context, state) {
+        if (state is ChangeBalance) {
+          setState(() {
+            percent = context.read<ExpenseCubit>().monthExpense /
+                (context.read<BalanceCubit>().budget / 100);
+          });
+        }
+      },
+    );
+    return percent;
   }
 
   @override
@@ -47,11 +55,17 @@ class _PercentWidgetState extends State<PercentWidget> {
                   ),
                   TextButton.icon(
                     onPressed: () {
-                      widget._allBudjet(context);
+                      showModalBottomSheet(
+                        context: context,
+                        isDismissible: false,
+                        builder: (ctx) {
+                          return AddBalance();
+                        },
+                      );
                     },
                     icon: const Icon(Icons.edit),
                     label: Text(
-                      "${NumberFormat.currency(symbol: "").format(widget.budjet)} sum",
+                      "${NumberFormat.currency(symbol: "").format(context.watch<BalanceCubit>().budget)} sum",
                       style: const TextStyle(
                         fontSize: 12,
                         decoration: TextDecoration.underline,
@@ -61,7 +75,7 @@ class _PercentWidgetState extends State<PercentWidget> {
                 ],
               ),
               Text(
-                "${widget.percentCalc.toStringAsFixed(1)}%",
+                "${percentCalc.toStringAsFixed(1)}%",
                 style: const TextStyle(fontSize: 12),
               ),
             ],
@@ -71,10 +85,9 @@ class _PercentWidgetState extends State<PercentWidget> {
             width: 320,
             lineHeight: 5,
             animationDuration: 50,
-            percent:
-                double.parse(widget.percentCalc.toStringAsFixed(1)) / 100 < 1.0
-                    ? double.parse(widget.percentCalc.toStringAsFixed(1)) / 100
-                    : 1,
+            percent: double.parse(percentCalc.toStringAsFixed(1)) / 100 < 1.0
+                ? double.parse(percentCalc.toStringAsFixed(1)) / 100
+                : 1,
             backgroundColor: Colors.grey,
             linearGradient: const LinearGradient(
               colors: [

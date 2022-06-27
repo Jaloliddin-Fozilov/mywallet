@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:mywallet/logic/balance/balance_cubit.dart';
 import 'package:mywallet/logic/date/date_cubit.dart';
+import 'package:mywallet/logic/expense/expense_cubit.dart';
 
 class MoneyWidget extends StatelessWidget {
-  final double totalPriceSum;
-
-  const MoneyWidget({Key? key, required this.totalPriceSum}) : super(key: key);
+  const MoneyWidget({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +25,35 @@ class MoneyWidget extends StatelessWidget {
             child: CircleAvatar(
               radius: 14,
               backgroundColor: Colors.transparent,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_left),
-                color: Colors.black45,
-                iconSize: 20,
-                padding: const EdgeInsets.all(0),
-                onPressed: () => context.read<DateCubit>().changeDate(
-                      DateTime(
-                        context.read<DateCubit>().getActiveDate.year,
-                        context.read<DateCubit>().getActiveDate.month - 1,
-                      ),
-                    ),
+              child: BlocBuilder<BalanceCubit, BalanceState>(
+                builder: (context, state) {
+                  if (state is ChangeActiveDate) {
+                    return IconButton(
+                      icon: const Icon(Icons.arrow_left),
+                      color: Colors.black45,
+                      iconSize: 20,
+                      padding: const EdgeInsets.all(0),
+                      onPressed: () => context.read<DateCubit>().changeDate(
+                            DateTime(
+                              context.read<DateCubit>().getActiveDate.year,
+                              context.read<DateCubit>().getActiveDate.month - 1,
+                            ),
+                          ),
+                    );
+                  }
+                  return IconButton(
+                    icon: const Icon(Icons.arrow_left),
+                    color: Colors.black45,
+                    iconSize: 20,
+                    padding: const EdgeInsets.all(0),
+                    onPressed: () => context.read<DateCubit>().changeDate(
+                          DateTime(
+                            context.read<DateCubit>().getActiveDate.year,
+                            context.read<DateCubit>().getActiveDate.month - 1,
+                          ),
+                        ),
+                  );
+                },
               ),
             ),
           ),
@@ -45,7 +65,10 @@ class MoneyWidget extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: NumberFormat.currency(symbol: "").format(totalPriceSum),
+                  text: NumberFormat.currency(symbol: "").format(
+                    context.watch<BalanceCubit>().budget -
+                        context.watch<ExpenseCubit>().monthExpense,
+                  ),
                   style: const TextStyle(
                     fontSize: 34,
                   ),

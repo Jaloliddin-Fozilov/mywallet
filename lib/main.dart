@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mywallet/logic/balance/balance_cubit.dart';
 import 'package:mywallet/logic/expense/expense_cubit.dart';
 import 'package:mywallet/logic/user/user_cubit.dart';
 import 'package:mywallet/presentation/screens/home_screen.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (ctx) => DateCubit(),
+        ),
+        BlocProvider(
+          create: (ctx) => BalanceCubit(),
         ),
         BlocProvider(
           create: (ctx) => ExpenseCubit(

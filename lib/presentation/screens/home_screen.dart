@@ -35,11 +35,11 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Column(
-        children: [
-          const ActiveDate(),
-          MoneyWidget(totalPriceSum: 456.45),
-          PercentWidget(() {}, 456.45, 42),
-          const ExpensesBlock(),
+        children: const [
+          ActiveDate(),
+          MoneyWidget(),
+          PercentWidget(),
+          ExpensesBlock(),
         ],
       ),
     );
