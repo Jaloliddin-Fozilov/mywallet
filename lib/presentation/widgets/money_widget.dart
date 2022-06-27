@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:mywallet/logic/cubit/date_cubit.dart';
+import 'package:mywallet/logic/date/date_cubit.dart';
 
 class MoneyWidget extends StatelessWidget {
   final double totalPriceSum;
 
-  MoneyWidget(
-    this.totalPriceSum,
-  );
+  const MoneyWidget({Key? key, required this.totalPriceSum}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,31 +24,34 @@ class MoneyWidget extends StatelessWidget {
               radius: 14,
               backgroundColor: Colors.transparent,
               child: IconButton(
-                icon: Icon(Icons.arrow_left),
+                icon: const Icon(Icons.arrow_left),
                 color: Colors.black45,
                 iconSize: 20,
                 padding: const EdgeInsets.all(0),
-                onPressed: () => context
-                    .read<DateCubit>()
-                    .previousMonth(context.read<DateCubit>().state.date!),
+                onPressed: () => context.read<DateCubit>().changeDate(
+                      DateTime(
+                        context.read<DateCubit>().getActiveDate.year,
+                        context.read<DateCubit>().getActiveDate.month - 1,
+                      ),
+                    ),
               ),
             ),
           ),
           RichText(
             text: TextSpan(
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
               children: [
                 TextSpan(
                   text: NumberFormat.currency(symbol: "").format(totalPriceSum),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 34,
                   ),
                 ),
-                TextSpan(
-                  text: " so'm",
+                const TextSpan(
+                  text: " sum",
                   style: TextStyle(
                     fontSize: 18,
                   ),
@@ -67,13 +68,16 @@ class MoneyWidget extends StatelessWidget {
               radius: 14,
               backgroundColor: Colors.transparent,
               child: IconButton(
-                icon: Icon(Icons.arrow_right),
+                icon: const Icon(Icons.arrow_right),
                 color: Colors.black45,
                 iconSize: 20,
                 padding: const EdgeInsets.all(0),
-                onPressed: () => context
-                    .read<DateCubit>()
-                    .nextMonth(context.read<DateCubit>().state.date!),
+                onPressed: () => context.read<DateCubit>().changeDate(
+                      DateTime(
+                        context.read<DateCubit>().getActiveDate.year,
+                        context.read<DateCubit>().getActiveDate.month + 1,
+                      ),
+                    ),
               ),
             ),
           ),

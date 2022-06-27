@@ -7,11 +7,7 @@ abstract class ExpenseState {
   const ExpenseState({this.expenses});
 }
 
-class ExpenseInitial extends ExpenseState {
-  final List<Expense> expenses;
-
-  const ExpenseInitial(this.expenses);
-}
+class ExpenseInitial extends ExpenseState {}
 
 class ExpenseAdded extends ExpenseState {}
 

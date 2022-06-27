@@ -8,16 +8,16 @@ abstract class DateState {
 }
 
 class DateInitial extends DateState {
-  const DateInitial(DateTime date) : super(date: date);
-}
-
-class ChangeDateState extends DateState {
-  final DateTime activeDate;
-  const ChangeDateState(this.activeDate) : super(date: activeDate);
+  const DateInitial(DateTime dateTime) : super(date: dateTime);
 }
 
 class ChangeExpensesDate extends DateState {
   final List<Expense> expenses;
 
-  ChangeExpensesDate(this.expenses);
+  const ChangeExpensesDate(this.expenses);
+}
+
+class ChangeActiveDate extends DateState {
+  final DateTime date;
+  const ChangeActiveDate(this.date) : super(date: date);
 }

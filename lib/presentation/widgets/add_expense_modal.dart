@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mywallet/logic/cubit/date_cubit.dart';
+import 'package:mywallet/logic/date/date_cubit.dart';
 // import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:mywallet/logic/expense/expense_cubit.dart';
 
@@ -28,7 +28,6 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
     }
     context.read<ExpenseCubit>().addExpense(expenseTitle.text,
         double.parse(expensePrice.text), selectedIcon!, selectedDay!);
-    context.read<ExpenseCubit>().getExpenses();
     Navigator.of(context).pop();
   }
 

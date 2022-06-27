@@ -26,7 +26,7 @@ class _PercentWidgetState extends State<PercentWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color(0xffEFEEFC),
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(50.0),
@@ -41,18 +41,18 @@ class _PercentWidgetState extends State<PercentWidget> {
             children: [
               Row(
                 children: [
-                  Text(
-                    "Oylik byudjet: ",
+                  const Text(
+                    "Salary: ",
                     style: TextStyle(fontSize: 12),
                   ),
                   TextButton.icon(
                     onPressed: () {
                       widget._allBudjet(context);
                     },
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     label: Text(
                       "${NumberFormat.currency(symbol: "").format(widget.budjet)} so'm",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         decoration: TextDecoration.underline,
                       ),
@@ -62,7 +62,7 @@ class _PercentWidgetState extends State<PercentWidget> {
               ),
               Text(
                 "${widget.percentCalc.toStringAsFixed(1)}%",
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
             ],
           ),
@@ -76,7 +76,7 @@ class _PercentWidgetState extends State<PercentWidget> {
                     ? double.parse(widget.percentCalc.toStringAsFixed(1)) / 100
                     : 1,
             backgroundColor: Colors.grey,
-            linearGradient: LinearGradient(
+            linearGradient: const LinearGradient(
               colors: [
                 Colors.blue,
                 Colors.lightBlueAccent,

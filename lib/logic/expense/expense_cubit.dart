@@ -4,49 +4,58 @@ import 'package:meta/meta.dart';
 import 'package:mywallet/logic/user/user_cubit.dart';
 
 import '../../data/models/expense.dart';
-import '../cubit/date_cubit.dart';
+import '../date/date_cubit.dart';
 
 part 'expense_state.dart';
 
 class ExpenseCubit extends Cubit<ExpenseState> {
   final UserCubit userCubit;
+  final DateCubit dateCubit;
 
-  ExpenseCubit({required this.userCubit})
-      : super(
-          ExpenseInitial([
-            Expense(
-              id: UniqueKey().toString(),
-              title: 'Phone',
-              date: DateTime(2022, 06),
-              userId: '1',
-              price: 200456,
-              icon: Icons.phone,
-            ),
-            Expense(
-              id: UniqueKey().toString(),
-              title: 'Phone',
-              date: DateTime.now(),
-              userId: '1',
-              price: 200456,
-              icon: Icons.phone,
-            ),
-            Expense(
-              id: UniqueKey().toString(),
-              title: 'Phone',
-              date: DateTime(2022, 05),
-              userId: '1',
-              price: 200456,
-              icon: Icons.phone,
-            ),
-          ]),
-        );
+  List<Expense> list = [
+    Expense(
+      id: UniqueKey().toString(),
+      title: 'Phone',
+      date: DateTime(2022, 06),
+      userId: '1',
+      price: 200456,
+      icon: Icons.phone,
+    ),
+    Expense(
+      id: UniqueKey().toString(),
+      title: 'Phone',
+      date: DateTime.now(),
+      userId: '1',
+      price: 200456,
+      icon: Icons.phone,
+    ),
+    Expense(
+      id: UniqueKey().toString(),
+      title: 'Phone',
+      date: DateTime(2022, 05),
+      userId: '1',
+      price: 200456,
+      icon: Icons.phone,
+    )
+  ];
+
+  List<Expense> get expensesList {
+    return [...list];
+  }
+
+  ExpenseCubit({required this.userCubit, required this.dateCubit})
+      : super(ExpenseInitial());
 
   void getExpenses() {
     final user = userCubit.currentUser;
-    final expenses =
-        state.expenses!.where((expense) => expense.userId == user.id).toList();
-    print(expenses);
-    emit(ExpenseInitial(expenses));
+    final date = dateCubit.getActiveDate;
+    emit(ExpenseLoaded(expensesList));
+    final expenses = state.expenses!
+        .where((expense) =>
+            expense.userId == user.id &&
+            expense.date.month == date.month &&
+            expense.date.year == date.year)
+        .toList();
     emit(ExpenseLoaded(expenses));
   }
 
@@ -66,7 +75,8 @@ class ExpenseCubit extends Cubit<ExpenseState> {
         price: price,
         icon: icon,
       );
-      final expenses = [...state.expenses!, todo];
+      list.add(todo);
+      final List<Expense> expenses = list;
       emit(ExpenseAdded());
       emit(ExpenseLoaded(expenses));
     } catch (e) {

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
-import 'package:mywallet/logic/cubit/date_cubit.dart';
-
-import '../../logic/expense/expense_cubit.dart';
+import 'package:mywallet/logic/date/date_cubit.dart';
 
 class ActiveDate extends StatefulWidget {
   const ActiveDate({Key? key}) : super(key: key);
@@ -58,11 +56,23 @@ class _ActiveDateState extends State<ActiveDate> {
             onPressed: () {
               selectDate(context);
             },
-            child: Text(
-              DateFormat("MMMM, yyyy")
-                  .format(context.read<DateCubit>().state.date!),
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor, fontSize: 18),
+            child: BlocBuilder<DateCubit, DateState>(
+              builder: (context, state) {
+                if (state is ChangeActiveDate) {
+                  return Text(
+                    DateFormat("MMMM, yyyy")
+                        .format(context.read<DateCubit>().getActiveDate),
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor, fontSize: 18),
+                  );
+                }
+                return Text(
+                  DateFormat("MMMM, yyyy")
+                      .format(context.read<DateCubit>().getActiveDate),
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor, fontSize: 18),
+                );
+              },
             ),
           ),
         ],

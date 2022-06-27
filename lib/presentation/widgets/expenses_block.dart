@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mywallet/logic/cubit/date_cubit.dart';
+import 'package:mywallet/logic/date/date_cubit.dart';
 import 'package:mywallet/logic/expense/expense_cubit.dart';
 import 'package:mywallet/presentation/widgets/expense_widget.dart';
 
@@ -14,8 +14,6 @@ class ExpensesBlock extends StatefulWidget {
 class _ExpensesBlockState extends State<ExpensesBlock> {
   @override
   Widget build(BuildContext context) {
-    context.read<ExpenseCubit>().getExpenses();
-
     return Expanded(
       child: Scaffold(
         backgroundColor: const Color(0xffEFEEFC),
@@ -28,18 +26,16 @@ class _ExpensesBlockState extends State<ExpensesBlock> {
               topLeft: Radius.circular(50.0),
             ),
           ),
-          child: BlocListener<ExpenseCubit, ExpenseState>(
+          child: BlocListener<DateCubit, DateState>(
             listener: (context, state) {
-              if (state is ExpenseAdded) {
-                setState(() {
-                  context.watch<ExpenseCubit>().getExpenses();
-                });
+              if (state is ChangeActiveDate) {
+                context.read<ExpenseCubit>().getExpenses();
               }
             },
-            child: BlocBuilder<DateCubit, DateState>(
+            child: BlocBuilder<ExpenseCubit, ExpenseState>(
               builder: (context, state) {
                 context.read<ExpenseCubit>().getExpenses();
-                if (state is ChangeExpensesDate) {
+                if (state is ExpenseLoaded) {
                   return state.expenses.isEmpty
                       ? Center(
                           child: Column(
