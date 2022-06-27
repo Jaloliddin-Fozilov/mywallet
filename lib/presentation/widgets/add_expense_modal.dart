@@ -19,7 +19,7 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
   final expenseTitle = TextEditingController();
   final expensePrice = TextEditingController();
 
-  void submitXarajat(BuildContext context) {
+  void submitExpense(BuildContext context) {
     if (expenseTitle.text.isEmpty &&
         expensePrice.text.isEmpty &&
         selectedDay == null &&
@@ -82,7 +82,7 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
                   width: 150.0,
                   child: TextField(
                     decoration: const InputDecoration(
-                      labelText: "Xarajat nomi",
+                      labelText: "Expense name",
                     ),
                     controller: expenseTitle,
                   ),
@@ -90,8 +90,7 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
                 SizedBox(
                   width: 150.0,
                   child: TextField(
-                    decoration:
-                        const InputDecoration(labelText: "Xarajat miqdori"),
+                    decoration: const InputDecoration(labelText: "Cost amount"),
                     controller: expensePrice,
                     keyboardType: TextInputType.number,
                   ),
@@ -103,14 +102,14 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
               children: [
                 Text(
                   selectedDay == null
-                      ? "Sana hali tanlanmagan!"
+                      ? "The date has not yet been selected!"
                       : DateFormat("MMMM  d, yyyy").format(selectedDay!),
                 ),
                 TextButton(
                   onPressed: () {
                     selectDateDay(context);
                   },
-                  child: const Text("KUNNI TANLASH"),
+                  child: const Text("SELECT A DAY"),
                 ),
               ],
             ),
@@ -119,12 +118,12 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
               children: [
                 selectedIcon != null
                     ? Icon(selectedIcon)
-                    : const Text("Icon tanlanmagan!"),
+                    : const Text("Icon not selected!"),
                 TextButton(
                   onPressed: () {
                     selectIcon(context);
                   },
-                  child: const Text("ICON TANLASH"),
+                  child: const Text("SELECT ICON"),
                 ),
               ],
             ),
@@ -135,13 +134,13 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("BEKOR QILISH"),
+                  child: const Text("CLOSE"),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    submitXarajat(context);
+                    submitExpense(context);
                   },
-                  child: const Text("KIRITISH"),
+                  child: const Text("SUBMIT"),
                 )
               ],
             ),

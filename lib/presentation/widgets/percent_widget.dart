@@ -51,7 +51,7 @@ class _PercentWidgetState extends State<PercentWidget> {
                     },
                     icon: const Icon(Icons.edit),
                     label: Text(
-                      "${NumberFormat.currency(symbol: "").format(widget.budjet)} so'm",
+                      "${NumberFormat.currency(symbol: "").format(widget.budjet)} sum",
                       style: const TextStyle(
                         fontSize: 12,
                         decoration: TextDecoration.underline,
