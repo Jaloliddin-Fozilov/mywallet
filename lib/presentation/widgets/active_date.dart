@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
-import 'package:mywallet/logic/date/date_cubit.dart';
+
+import '../../logic/date/date_bloc.dart';
 
 class ActiveDate extends StatefulWidget {
   const ActiveDate({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _ActiveDateState extends State<ActiveDate> {
   @override
   void didChangeDependencies() {
     if (!_init) {
-      context.read<DateCubit>().changeDate(selectedMonth);
+      context.read<DateBloc>().add(ChangeDateEvent(selectedMonth));
     }
     _init = true;
     super.didChangeDependencies();
@@ -36,8 +37,7 @@ class _ActiveDateState extends State<ActiveDate> {
           setState(
             () {
               selectedMonth = selected;
-              context.read<DateCubit>().changeDate(selectedMonth);
-              // context.read<DateCubit>().getExpensesByFilter();
+              context.read<DateBloc>().add(ChangeDateEvent(selectedMonth));
             },
           );
         }
@@ -56,19 +56,19 @@ class _ActiveDateState extends State<ActiveDate> {
             onPressed: () {
               selectDate(context);
             },
-            child: BlocBuilder<DateCubit, DateState>(
+            child: BlocBuilder<DateBloc, DateState>(
               builder: (context, state) {
                 if (state is ChangeActiveDate) {
                   return Text(
                     DateFormat("MMMM, yyyy")
-                        .format(context.read<DateCubit>().getActiveDate),
+                        .format(context.read<DateBloc>().getActiveDate),
                     style: TextStyle(
                         color: Theme.of(context).primaryColor, fontSize: 18),
                   );
                 }
                 return Text(
                   DateFormat("MMMM, yyyy")
-                      .format(context.read<DateCubit>().getActiveDate),
+                      .format(context.read<DateBloc>().getActiveDate),
                   style: TextStyle(
                       color: Theme.of(context).primaryColor, fontSize: 18),
                 );

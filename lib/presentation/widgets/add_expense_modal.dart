@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mywallet/logic/date/date_cubit.dart';
+import 'package:intl/intl.dart';
+
+import '../../logic/expense/expense_bloc.dart';
 // import 'package:flutter_iconpicker/flutter_iconpicker.dart';
-import 'package:mywallet/logic/expense/expense_cubit.dart';
 
 class AddExpenseModal extends StatefulWidget {
   const AddExpenseModal({Key? key}) : super(key: key);
@@ -26,8 +26,8 @@ class _AddExpenseModalState extends State<AddExpenseModal> {
         selectedIcon == null) {
       return;
     }
-    context.read<ExpenseCubit>().addExpense(expenseTitle.text,
-        double.parse(expensePrice.text), selectedIcon!, selectedDay!);
+    context.read<ExpenseBloc>().add(AddNewExpenseEvent(expenseTitle.text,
+        double.parse(expensePrice.text), selectedIcon!, selectedDay!));
     Navigator.of(context).pop();
   }
 

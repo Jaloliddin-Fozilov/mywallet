@@ -1,4 +1,4 @@
-part of 'user_cubit.dart';
+part of 'user_bloc.dart';
 
 @immutable
 abstract class UserState {

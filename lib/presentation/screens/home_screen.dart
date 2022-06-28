@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mywallet/presentation/widgets/add_expense_modal.dart';
-import 'package:mywallet/presentation/widgets/expenses_block.dart';
-import 'package:mywallet/presentation/widgets/percent_widget.dart';
 
-import '../../logic/expense/expense_cubit.dart';
+import '../../logic/expense/expense_bloc.dart';
 import '../widgets/active_date.dart';
+import '../widgets/add_expense_modal.dart';
+import '../widgets/expenses_block.dart';
 import '../widgets/money_widget.dart';
+import '../widgets/percent_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    context.read<ExpenseCubit>().getExpenses();
+    context.read<ExpenseBloc>().add(LoadExpenseEvent());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

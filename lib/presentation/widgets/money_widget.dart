@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:mywallet/logic/balance/balance_cubit.dart';
-import 'package:mywallet/logic/date/date_cubit.dart';
-import 'package:mywallet/logic/expense/expense_cubit.dart';
+import 'package:mywallet/logic/balance/balance_bloc.dart';
+import 'package:mywallet/logic/date/date_bloc.dart';
+import 'package:mywallet/logic/expense/expense_bloc.dart';
 
 class MoneyWidget extends StatelessWidget {
   const MoneyWidget({
@@ -25,7 +25,7 @@ class MoneyWidget extends StatelessWidget {
             child: CircleAvatar(
               radius: 14,
               backgroundColor: Colors.transparent,
-              child: BlocBuilder<BalanceCubit, BalanceState>(
+              child: BlocBuilder<BalanceBloc, BalanceState>(
                 builder: (context, state) {
                   if (state is ChangeActiveDate) {
                     return IconButton(
@@ -33,10 +33,13 @@ class MoneyWidget extends StatelessWidget {
                       color: Colors.black45,
                       iconSize: 20,
                       padding: const EdgeInsets.all(0),
-                      onPressed: () => context.read<DateCubit>().changeDate(
-                            DateTime(
-                              context.read<DateCubit>().getActiveDate.year,
-                              context.read<DateCubit>().getActiveDate.month - 1,
+                      onPressed: () => context.read<DateBloc>().add(
+                            ChangeDateEvent(
+                              DateTime(
+                                context.read<DateBloc>().getActiveDate.year,
+                                context.read<DateBloc>().getActiveDate.month -
+                                    1,
+                              ),
                             ),
                           ),
                     );
@@ -46,10 +49,12 @@ class MoneyWidget extends StatelessWidget {
                     color: Colors.black45,
                     iconSize: 20,
                     padding: const EdgeInsets.all(0),
-                    onPressed: () => context.read<DateCubit>().changeDate(
-                          DateTime(
-                            context.read<DateCubit>().getActiveDate.year,
-                            context.read<DateCubit>().getActiveDate.month - 1,
+                    onPressed: () => context.read<DateBloc>().add(
+                          ChangeDateEvent(
+                            DateTime(
+                              context.read<DateBloc>().getActiveDate.year,
+                              context.read<DateBloc>().getActiveDate.month - 1,
+                            ),
                           ),
                         ),
                   );
@@ -66,8 +71,8 @@ class MoneyWidget extends StatelessWidget {
               children: [
                 TextSpan(
                   text: NumberFormat.currency(symbol: "").format(
-                    context.watch<BalanceCubit>().budget -
-                        context.watch<ExpenseCubit>().monthExpense,
+                    context.watch<BalanceBloc>().budget -
+                        context.watch<ExpenseBloc>().monthExpense,
                   ),
                   style: const TextStyle(
                     fontSize: 34,
@@ -95,10 +100,12 @@ class MoneyWidget extends StatelessWidget {
                 color: Colors.black45,
                 iconSize: 20,
                 padding: const EdgeInsets.all(0),
-                onPressed: () => context.read<DateCubit>().changeDate(
-                      DateTime(
-                        context.read<DateCubit>().getActiveDate.year,
-                        context.read<DateCubit>().getActiveDate.month + 1,
+                onPressed: () => context.read<DateBloc>().add(
+                      ChangeDateEvent(
+                        DateTime(
+                          context.read<DateBloc>().getActiveDate.year,
+                          context.read<DateBloc>().getActiveDate.month + 1,
+                        ),
                       ),
                     ),
               ),

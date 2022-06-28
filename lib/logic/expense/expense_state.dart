@@ -1,4 +1,4 @@
-part of 'expense_cubit.dart';
+part of 'expense_bloc.dart';
 
 @immutable
 abstract class ExpenseState {
@@ -7,7 +7,11 @@ abstract class ExpenseState {
   const ExpenseState({this.expenses});
 }
 
-class ExpenseInitial extends ExpenseState {}
+class ExpenseInitial extends ExpenseState {
+  final List<Expense> expenses;
+
+  const ExpenseInitial(this.expenses) : super(expenses: expenses);
+}
 
 class ExpenseAdded extends ExpenseState {}
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mywallet/data/models/expense.dart';
+import 'package:intl/intl.dart';
 
-import '../../logic/expense/expense_cubit.dart';
+import '../../data/models/expense.dart';
+import '../../logic/expense/expense_bloc.dart';
 
 class ExpenseWidget extends StatefulWidget {
   final Expense expense;
@@ -23,7 +23,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget> {
       key: UniqueKey(),
       onDismissed: (direction) {
         // Then show a snackbar.
-        context.read<ExpenseCubit>().deleteExpense(widget.expense.id);
+        context.read<ExpenseBloc>().add(DeleteExpenseEvent(widget.expense.id));
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("${widget.expense.title} o'chirildi")));
       },

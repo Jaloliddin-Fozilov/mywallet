@@ -1,4 +1,4 @@
-part of 'balance_cubit.dart';
+part of 'balance_bloc.dart';
 
 @immutable
 abstract class BalanceState {

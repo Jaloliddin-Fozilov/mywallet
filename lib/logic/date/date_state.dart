@@ -1,4 +1,4 @@
-part of 'date_cubit.dart';
+part of 'date_bloc.dart';
 
 @immutable
 abstract class DateState {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mywallet/logic/balance/balance_cubit.dart';
-import 'package:mywallet/logic/expense/expense_cubit.dart';
-import 'package:mywallet/logic/user/user_cubit.dart';
-import 'package:mywallet/presentation/screens/home_screen.dart';
 
-import 'logic/date/date_cubit.dart';
+import 'logic/balance/balance_bloc.dart';
+import 'logic/date/date_bloc.dart';
+import 'logic/expense/expense_bloc.dart';
+import 'logic/user/user_bloc.dart';
+import 'presentation/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,18 +18,19 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (ctx) => UserCubit(),
+          create: (ctx) => UserBloc(),
         ),
         BlocProvider(
-          create: (ctx) => DateCubit(),
+          create: (ctx) => DateBloc(),
         ),
         BlocProvider(
-          create: (ctx) => BalanceCubit(),
+          create: (ctx) => BalanceBloc(),
         ),
         BlocProvider(
-          create: (ctx) => ExpenseCubit(
-              userCubit: ctx.read<UserCubit>(),
-              dateCubit: ctx.read<DateCubit>()),
+          create: (ctx) => ExpenseBloc(
+            ctx.read<UserBloc>(),
+            ctx.read<DateBloc>(),
+          ),
         ),
       ],
       child: MaterialApp(
