@@ -7,7 +7,7 @@ class AddBalance extends StatelessWidget {
 
   double budget = 0.0;
 
-  AddBalance();
+  AddBalance({Key? key}) : super(key: key);
 
   void submitBalance(BuildContext context) {
     if (inputBalance.text.isEmpty) {

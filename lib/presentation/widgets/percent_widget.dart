@@ -6,6 +6,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:intl/intl.dart';
 
 import '../../logic/balance/balance_cubit.dart';
+import '../../logic/date/date_cubit.dart';
 
 class PercentWidget extends StatefulWidget {
   const PercentWidget({Key? key}) : super(key: key);
@@ -18,16 +19,10 @@ class _PercentWidgetState extends State<PercentWidget> {
   double percent = 0;
 
   double get percentCalc {
-    BlocListener<BalanceCubit, BalanceState>(
-      listener: (context, state) {
-        if (state is ChangeBalance) {
-          setState(() {
-            percent = context.read<ExpenseCubit>().monthExpense /
-                (context.read<BalanceCubit>().budget / 100);
-          });
-        }
-      },
-    );
+    setState(() {
+      percent = context.read<ExpenseCubit>().monthExpense /
+          (context.read<BalanceCubit>().budget / 100);
+    });
     return percent;
   }
 
@@ -64,11 +59,34 @@ class _PercentWidgetState extends State<PercentWidget> {
                       );
                     },
                     icon: const Icon(Icons.edit),
-                    label: Text(
-                      "${NumberFormat.currency(symbol: "").format(context.watch<BalanceCubit>().budget)} sum",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        decoration: TextDecoration.underline,
+                    label: BlocListener<BalanceCubit, BalanceState>(
+                      listener: (context, state) {
+                        if (state is ChangeBalance) {
+                          setState(() {});
+                        }
+                      },
+                      child: BlocConsumer<DateCubit, DateState>(
+                        builder: (context, state) {
+                          if (state is ChangeActiveDate) {
+                            return Text(
+                              "${NumberFormat.currency(symbol: "").format(context.read<BalanceCubit>().budget)} sum",
+                              style: const TextStyle(
+                                fontSize: 12,
+                                decoration: TextDecoration.underline,
+                              ),
+                            );
+                          }
+                          return Text(
+                            "${NumberFormat.currency(symbol: "").format(context.read<BalanceCubit>().budget)} sum",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              decoration: TextDecoration.underline,
+                            ),
+                          );
+                        },
+                        listener: (context, state) {
+                          return setState(() {});
+                        },
                       ),
                     ),
                   ),
