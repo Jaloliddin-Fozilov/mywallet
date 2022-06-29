@@ -20,7 +20,7 @@ class _ExpenseWidgetState extends State<ExpenseWidget> {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: UniqueKey(),
+      key: ObjectKey(widget.expense),
       onDismissed: (direction) {
         // Then show a snackbar.
         context.read<ExpenseBloc>().add(DeleteExpenseEvent(widget.expense.id));

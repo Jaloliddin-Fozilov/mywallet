@@ -113,6 +113,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
   void _deleteExpense(DeleteExpenseEvent event, Emitter<ExpenseState> emit) {
     final expenses = state.expenses;
     expenses!.removeWhere((expense) => expense.id == event.id);
+    _list.removeWhere((expense) => expense.id == event.id);
     emit(DeleteExpense());
     emit(ExpenseLoaded(expenses));
   }
